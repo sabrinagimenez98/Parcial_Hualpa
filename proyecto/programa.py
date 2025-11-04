@@ -6,10 +6,10 @@ from utils import validar_dato, obtener_ruta_csv
 BASE_DIR = "datos"
 
 def agregar_item():
-    continente = input("Continente: ").strip()
-    pais = input("País: ").strip()
-    ciudad = input("Ciudad: ").strip()
-    nombre = input("Nombre de la ciudad: ").strip()
+    continente = input("Continente: ").strip().title()
+    pais = input("País: ").strip().title()
+    ciudad = input("Ciudad: ").strip().title()
+    nombre = input("Nombre de la ciudad: ").strip().title()
     poblacion = validar_dato("Población", int)
     superficie = validar_dato("Superficie (km2)", float)
 
