@@ -1,4 +1,8 @@
-from gestor_archivos import agregar_item, mostrar_items, modificar_item, eliminar_item, mostrar_estadisticas
+from gestor_archivos import agregar_item
+from gestor_archivos import mostrar_items
+from gestor_archivos import modificar_item
+from gestor_archivos import eliminar_item
+from gestor_archivos import mostrar_estadisticas
 
 def menu():
     while True:
@@ -28,5 +32,5 @@ def menu():
         else:
             print("Opción inválida.")
 
-if __name__ == "__main__":
-    menu()
+#if __name__ == "__main__":
+menu()
