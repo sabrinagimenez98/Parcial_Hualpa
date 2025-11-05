@@ -1,9 +1,49 @@
 import os
 import csv
-from recursividad import leer_recursivo
-from utiles import validar_dato, obtener_ruta_csv, quitar_tildes
+import unicodedata
 
 BASE_DIR = "datos"
+
+def leer_recursivo(ruta):
+    datos = []
+    for entrada in os.listdir(ruta):
+        ruta_completa = os.path.join(ruta, entrada)
+        if os.path.isdir(ruta_completa):
+            datos.extend(leer_recursivo(ruta_completa))
+        elif entrada.endswith(".csv"):
+            with open(ruta_completa, "r", encoding="latin-1") as archivo:
+                reader = csv.DictReader(archivo)
+                for fila in reader:
+                    partes = ruta_completa.split(os.sep)
+                    try:
+                        continente = quitar_tildes(partes[-4])
+                        pais = quitar_tildes(partes[-3])
+                        ciudad = quitar_tildes(os.path.splitext(partes[-1])[0])
+                    except IndexError:
+                        continente = pais = ciudad = "Desconocido"
+
+                    fila["__ruta__"] = ruta_completa
+                    fila["continente"] = continente
+                    fila["pais"] = pais
+                    fila["ciudad"] = ciudad
+                    datos.append(fila)
+    return datos
+
+def quitar_tildes(texto):
+    return ''.join(
+        c for c in unicodedata.normalize('NFD', texto)
+        if unicodedata.category(c) != 'Mn'
+    )
+
+def validar_dato(campo, tipo):
+    while True:
+        try:
+            return tipo(input(f"{campo}: ").strip())
+        except ValueError:
+            print(f"Valor inválido para {campo}. Intente nuevamente.")
+
+def obtener_ruta_csv(base_dir, niveles):
+    return os.path.join(base_dir, *niveles) + ".csv"
 
 def agregar_item():
     continente = quitar_tildes(input("Continente: ").strip().title())
