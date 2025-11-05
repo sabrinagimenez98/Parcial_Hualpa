@@ -1,15 +1,9 @@
 import os
 import csv
-import unicodedata
-from lector_recursivo import leer_recursivo
-from utils import validar_dato, obtener_ruta_csv
+from recursividad import leer_recursivo
+from utiles import validar_dato, obtener_ruta_csv, quitar_tildes
 
 BASE_DIR = "datos"
-
-def quitar_tildes(texto):
-    return ''.join(
-        c for c in unicodedata.normalize('NFD', texto)
-        if unicodedata.category(c) != 'Mn')
 
 def agregar_item():
     continente = quitar_tildes(input("Continente: ").strip().title())
@@ -22,7 +16,7 @@ def agregar_item():
     ruta_csv = obtener_ruta_csv(BASE_DIR, [continente, pais, ciudad])
     os.makedirs(os.path.dirname(ruta_csv), exist_ok=True)
 
-    with open(ruta_csv, "a", newline='') as archivo:
+    with open(ruta_csv, "a", newline='', encoding="utf-8") as archivo:
         writer = csv.DictWriter(archivo, fieldnames=["nombre", "poblacion", "superficie"])
         if archivo.tell() == 0:
             writer.writeheader()
@@ -31,11 +25,16 @@ def agregar_item():
 
 def mostrar_items():
     items = leer_recursivo(BASE_DIR)
+    # Ordenar por país y ciudad sin tildes
+    items.sort(key=lambda i: (quitar_tildes(i["pais"]), quitar_tildes(i["ciudad"])))
     for item in items:
         nombre = quitar_tildes(item["nombre"])
+        continente = item["continente"]
+        pais = item["pais"]
+        ciudad = item["ciudad"]
         poblacion = item["poblacion"]
         superficie = item["superficie"]
-        print(f"{nombre}) | Población: {poblacion}, Superficie: {superficie} km²")
+        print(f"{nombre} - {ciudad}, {pais} ({continente}) | Población: {poblacion}, Superficie: {superficie} km²")
 
 def modificar_item():
     items = leer_recursivo(BASE_DIR)
@@ -59,14 +58,14 @@ def modificar_item():
     item[campo] = nuevo_valor
 
     ruta_csv = item["__ruta__"]
-    with open(ruta_csv, "r") as archivo:
+    with open(ruta_csv, "r", encoding="latin-1") as archivo:
         reader = list(csv.DictReader(archivo))
     for fila in reader:
         if quitar_tildes(fila["nombre"]) == nombre:
             fila[campo] = str(nuevo_valor)
             break
 
-    with open(ruta_csv, "w", newline='') as archivo:
+    with open(ruta_csv, "w", newline='', encoding="utf-8") as archivo:
         writer = csv.DictWriter(archivo, fieldnames=["nombre", "poblacion", "superficie"])
         writer.writeheader()
         writer.writerows(reader)
@@ -84,11 +83,11 @@ def eliminar_item():
     item = encontrados[0]
     ruta_csv = item["__ruta__"]
 
-    with open(ruta_csv, "r") as archivo:
+    with open(ruta_csv, "r", encoding="latin-1") as archivo:
         reader = list(csv.DictReader(archivo))
     reader = [fila for fila in reader if quitar_tildes(fila["nombre"]) != nombre]
 
-    with open(ruta_csv, "w", newline='') as archivo:
+    with open(ruta_csv, "w", newline='', encoding="utf-8") as archivo:
         writer = csv.DictWriter(archivo, fieldnames=["nombre", "poblacion", "superficie"])
         writer.writeheader()
         writer.writerows(reader)
