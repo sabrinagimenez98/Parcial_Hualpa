@@ -1,15 +1,21 @@
 import os
 import csv
+import unicodedata
 from recursividad import leer_recursivo
 from utils import validar_dato, obtener_ruta_csv
 
 BASE_DIR = "datos"
 
+def quitar_tildes(texto):
+    return ''.join(
+        c for c in unicodedata.normalize('NFD', texto)
+        if unicodedata.category(c) != 'Mn')
+
 def agregar_item():
-    continente = input("Continente: ").strip().title()
-    pais = input("País: ").strip().title()
-    ciudad = input("Ciudad: ").strip().title()
-    nombre = input("Nombre de la ciudad: ").strip().title()
+    continente = quitar_tildes(input("Continente: ").strip().title())
+    pais = quitar_tildes(input("País: ").strip().title())
+    ciudad = quitar_tildes(input("Ciudad: ").strip().title())
+    nombre = quitar_tildes(input("Nombre de la ciudad: ").strip().title())
     poblacion = validar_dato("Población", int)
     superficie = validar_dato("Superficie (km2)", float)
 
@@ -26,12 +32,16 @@ def agregar_item():
 def mostrar_items():
     items = leer_recursivo(BASE_DIR)
     for item in items:
-        print(item)
+        nombre = quitar_tildes(item["nombre"])
+        poblacion = item["poblacion"]
+        superficie = item["superficie"]
+        print(f"{nombre} - Población: {poblacion}, Superficie: {superficie} km²")
+
 
 def modificar_item():
     items = leer_recursivo(BASE_DIR)
-    nombre = input("Nombre exacto del ítem a modificar: ").strip()
-    encontrados = [i for i in items if i["nombre"] == nombre]
+    nombre = quitar_tildes(input("Nombre exacto del ítem a modificar: ").strip())
+    encontrados = [i for i in items if quitar_tildes(i["nombre"]) == nombre]
 
     if not encontrados:
         print("Ítem no encontrado.")
@@ -45,13 +55,15 @@ def modificar_item():
         return
 
     nuevo_valor = validar_dato(f"Nuevo valor para {campo}", int if campo == "poblacion" else float if campo == "superficie" else str)
+    if campo == "nombre":
+        nuevo_valor = quitar_tildes(nuevo_valor.strip().title())
     item[campo] = nuevo_valor
 
     ruta_csv = item["__ruta__"]
     with open(ruta_csv, "r") as archivo:
         reader = list(csv.DictReader(archivo))
     for fila in reader:
-        if fila["nombre"] == nombre:
+        if quitar_tildes(fila["nombre"]) == nombre:
             fila[campo] = str(nuevo_valor)
             break
 
@@ -63,8 +75,8 @@ def modificar_item():
 
 def eliminar_item():
     items = leer_recursivo(BASE_DIR)
-    nombre = input("Nombre exacto del ítem a eliminar: ").strip()
-    encontrados = [i for i in items if i["nombre"] == nombre]
+    nombre = quitar_tildes(input("Nombre exacto del ítem a eliminar: ").strip())
+    encontrados = [i for i in items if quitar_tildes(i["nombre"]) == nombre]
 
     if not encontrados:
         print("Ítem no encontrado.")
@@ -75,7 +87,7 @@ def eliminar_item():
 
     with open(ruta_csv, "r") as archivo:
         reader = list(csv.DictReader(archivo))
-    reader = [fila for fila in reader if fila["nombre"] != nombre]
+    reader = [fila for fila in reader if quitar_tildes(fila["nombre"]) != nombre]
 
     with open(ruta_csv, "w", newline='') as archivo:
         writer = csv.DictWriter(archivo, fieldnames=["nombre", "poblacion", "superficie"])
@@ -120,5 +132,4 @@ def menu():
         else:
             print("Opción inválida.")
 
-#if __name__ == "__main__":
 menu()
