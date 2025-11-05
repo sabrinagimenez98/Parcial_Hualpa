@@ -14,14 +14,14 @@ La jerarquía se representa directamente en el sistema de archivos:
 datos/ 
 ├── América/ 
 │ └── Argentina/ 
-│ ├── Córdoba.csv 
-│ ├── Buenos Aires.csv 
+│  ├── Córdoba.csv 
+│  ├── Buenos Aires.csv 
 ├── Europa/ 
 │ └── España/ 
-│ ├── Madrid.csv 
-│ ├── Barcelona.csv 
+│  ├── Madrid.csv 
+│  ├── Barcelona.csv 
 │ └── Italia/ 
-│ ├── Nápoles.csv
+│  ├── Nápoles.csv
 
 Cada archivo CSV contiene ítems individuales representados como diccionarios en Python, con atributos como `nombre`, `poblacion` y `superficie`.
 
