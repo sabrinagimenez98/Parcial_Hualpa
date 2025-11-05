@@ -15,7 +15,7 @@ datos/
 ├── América/ 
 │ └── Argentina/ 
 │ ├── Córdoba.csv 
-│ ├── Mendoza.csv 
+│ ├── Buenos Aires.csv 
 ├── Europa/ 
 │ └── España/ 
 │ ├── Madrid.csv 
@@ -40,7 +40,6 @@ Cada archivo CSV contiene ítems individuales representados como diccionarios en
 - Python 3.x
 - Librerías estándar: `os`, `csv`
 - Estructuras: listas, diccionarios
-- Estilo: PEP 8 (indentación de 4 espacios)
 
 ## Instalación y Uso
 
@@ -58,6 +57,8 @@ python main.py
 
 Contenido: Diseño jerárquico, estructura de carpetas, funcionamiento del programa y ejemplo de uso.
 
+Enlace video explicativo: https://youtu.be/mrn7JNnq7Z4
+
 👥 Equipo de Trabajo
 
 Sabrina [UTN Mendoza]
@@ -65,4 +66,5 @@ Sabrina [UTN Mendoza]
 Ismael [UTN Mendoza]
 
 📌 Conclusión 
-Este proyecto demuestra el uso avanzado de recursividad, persistencia y diseño jerárquico aplicado a datos reales. Es una base sólida para sistemas más complejos como gestores de inventario, catálogos geográficos o bases de datos distribuidas.
+Este proyecto demuestra el uso de recursividad, persistencia y diseño jerárquico aplicado a datos reales. Es una base sólida para sistemas más complejos como gestores de inventario, catálogos geográficos o bases de datos distribuidas.
+En conclusion, con esta segunda parte del segundo parcial pudimos aplicar en su totalidad todos los contenidos vistos durante el cursado de la materia de Programacion uno, como tambien tuvimos que saber organizar nuestros tiempos para llegar a todas las entregas de manera exitosa. 

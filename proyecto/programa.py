@@ -4,6 +4,8 @@ import unicodedata
 
 BASE_DIR = "datos"
 
+#FUNCION PARA RECURSIVIDAD
+
 def leer_recursivo(ruta):
     datos = []
     for entrada in os.listdir(ruta):
@@ -29,6 +31,8 @@ def leer_recursivo(ruta):
                     datos.append(fila)
     return datos
 
+#FUNCIONES DE UTILIDAD
+
 def quitar_tildes(texto):
     return ''.join(
         c for c in unicodedata.normalize('NFD', texto)
@@ -44,6 +48,8 @@ def validar_dato(campo, tipo):
 
 def obtener_ruta_csv(base_dir, niveles):
     return os.path.join(base_dir, *niveles) + ".csv"
+
+#FUNCIONES MENU
 
 def agregar_item():
     continente = quitar_tildes(input("Continente: ").strip().title())
@@ -141,6 +147,8 @@ def mostrar_estadisticas():
     print(f"Total de ítems: {total}")
     print(f"Población total: {suma_poblacion}")
     print(f"Población promedio: {promedio:.2f}")
+
+#MENU PRINCIPAL
 
 def menu():
     while True:
