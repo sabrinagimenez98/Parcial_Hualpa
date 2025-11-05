@@ -1,6 +1,5 @@
 import os
 
-
 def validar_dato(campo, tipo):
     while True:
         valor = input(f"{campo}: ").strip()

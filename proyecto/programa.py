@@ -1,7 +1,7 @@
 import os
 import csv
 import unicodedata
-from recursividad import leer_recursivo
+from lector_recursivo import leer_recursivo
 from utils import validar_dato, obtener_ruta_csv
 
 BASE_DIR = "datos"
@@ -35,8 +35,7 @@ def mostrar_items():
         nombre = quitar_tildes(item["nombre"])
         poblacion = item["poblacion"]
         superficie = item["superficie"]
-        print(f"{nombre} - Población: {poblacion}, Superficie: {superficie} km²")
-
+        print(f"{nombre}) | Población: {poblacion}, Superficie: {superficie} km²")
 
 def modificar_item():
     items = leer_recursivo(BASE_DIR)
